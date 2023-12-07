@@ -8,14 +8,14 @@ pipeline {
             steps {
                 deleteDir()
                 sh 'echo cloning repo'
-                sh 'git clone https://github.com/rarvez77/ansible-task.git' 
+                sh 'git clone https://github.com/devil9121/terrafomr-ansible-jenkins.git' 
             }
         }
         
         stage('Terraform Apply') {
             steps {
                 script {
-                    dir('/var/lib/jenkins/workspace/ansible-tf/ansible-task/') {
+                    dir('/var/lib/jenkins/workspace/terrafomr-ansible-jenkins/terrafomr-ansible-jenkins/') {
                     sh 'pwd'
                     sh 'terraform init'
                     sh 'terraform validate'
