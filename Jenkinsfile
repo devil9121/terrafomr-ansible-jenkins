@@ -15,7 +15,7 @@ pipeline {
         stage('Terraform Apply') {
             steps {
                 script {
-                    dir('/var/lib/jenkins/workspace/terrafomr-ansible-jenkins/terrafomr-ansible-jenkins/') {
+                    dir('/var/lib/jenkins/workspace/challenge/terrafomr-ansible-jenkins') {
                     sh 'pwd'
                     sh 'terraform init'
                     sh 'terraform validate'
@@ -31,8 +31,8 @@ pipeline {
             steps {
                 script {
                    sleep '360'
-                    ansiblePlaybook becomeUser: 'ec2-user', credentialsId: 'amazonlinux', disableHostKeyChecking: true, installation: 'ansible', inventory: '/var/lib/jenkins/workspace/ansible-tf/ansible-task/inventory.yaml', playbook: '/var/lib/jenkins/workspace/ansible-tf/ansible-task/amazon-playbook.yml', vaultTmpPath: ''
-                    ansiblePlaybook become: true, credentialsId: 'ubuntuuser', disableHostKeyChecking: true, installation: 'ansible', inventory: '/var/lib/jenkins/workspace/ansible-tf/ansible-task/inventory.yaml', playbook: '/var/lib/jenkins/workspace/ansible-tf/ansible-task/ubuntu-playbook.yml', vaultTmpPath: ''
+                    ansiblePlaybook becomeUser: 'ec2-user', credentialsId: 'amazonlinux', disableHostKeyChecking: true, installation: 'ansible', inventory: '/var/lib/jenkins/workspace/challenge/terrafomr-ansible-jenkins/inventory.yaml', playbook: '/var/lib/jenkins/workspace/challenge/terrafomr-ansible-jenkins/amazon-playbook.yml', vaultTmpPath: ''
+                    ansiblePlaybook become: true, credentialsId: 'ubuntuuser', disableHostKeyChecking: true, installation: 'ansible', inventory: '/var/lib/jenkins/workspace/challenge/terrafomr-ansible-jenkins/inventory.yaml', playbook: '/var/lib/jenkins/workspace/challenge/terrafomr-ansible-jenkins/ubuntu-playbook.yml', vaultTmpPath: ''
                 }
             }
         }
