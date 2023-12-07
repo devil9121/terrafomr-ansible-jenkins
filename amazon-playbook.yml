@@ -1,0 +1,107 @@
+---
+- hosts: frontend
+  become: true
+  tasks:
+    - name: Ensure SELinux is set to permissive mode
+      lineinfile:
+        path: /etc/selinux/config
+        regexp: '^SELINUX='
+        line: 'SELINUX=permissive'
+
+    - name: Install Nginx using amazon-linux-extras
+      command: amazon-linux-extras install nginx1 -y
+      become: yes
+
+    - name: Ensure Nginx service is started
+      service:
+        name: nginx
+        state: started
+
+    - name: Replace Nginx configuration
+      copy:
+        src: nginx.conf.j2
+        dest: /etc/nginx/nginx.conf
+      notify: Reload Nginx
+
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
+
+
+
+
+#######  S A M P L E -- N G I N X  #########
+  #   - name: Ensure SELinux is set to permissive mode
+  #     lineinfile:
+  #       path: /etc/selinux/config
+  #       regexp: '^SELINUX='
+  #       line: 'SELINUX=permissive'
+  #     notify: Reboot if needed
+
+  # handlers:
+  #   - name: Reboot if needed
+  #     reboot:
+ 
+      # - name: Enable SELinux
+      #   ansible.posix.selinux:
+      #     policy: targeted
+      #     state: enforcing
+
+      # - name: Put SELinux in permissive mode, logging actions that would be blocked.
+      #   ansible.posix.selinux:
+      #     policy: targeted
+      #     state: permissive
+
+      # - name: Disable SELinux
+      #   ansible.posix.selinux:
+      #     state: disabled
+
+  #   - name: Disable SELinux
+  #     selinux:
+  #       state: disabled
+
+  #   - name: Install Nginx
+  #     yum:
+  #       name: nginx
+  #       state: present
+
+  #   - name: Start Nginx service
+  #     service:
+  #       name: nginx
+  #       state: started
+  #       enabled: true  # Start Nginx service on system boot
+
+  #   - name: Disable SELinux
+  #     selinux:
+  #       state: disabled
+
+  #   - name: Update DNF repositories
+  #     dnf:
+  #       name: "*"
+  #       state: latest
+
+  #   - name: Install Nginx
+  #     dnf:
+  #       name: nginx
+  #       state: present
+
+  #   - name: Start Nginx service
+  #     service:
+  #       name: nginx
+  #       state: started
+  #       enabled: true  # Start Nginx service on system boot
+        
+  #   - name: Configure Nginx proxy
+  #     template:
+  #       src: nginx.conf.j2
+  #       dest: /etc/nginx/nginx.conf
+  #     notify:
+  #       - restart nginx
+
+  # handlers:
+  #   - name: restart nginx
+  #     systemd:
+  #       name: nginx
+  #       state: restarted
